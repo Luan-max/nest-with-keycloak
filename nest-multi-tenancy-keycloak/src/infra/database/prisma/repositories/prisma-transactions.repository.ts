@@ -15,18 +15,6 @@ export class PrismaUsersMapper {
       brand: data.brand,
     };
   }
-
-  static toDomain(data: Transactions): Transaction {
-    return new Transaction(
-      {
-        type: data.type,
-        amount: data.amount,
-        brand: data.brand,
-        tenant_id: data.tenant_id,
-      },
-      data.id,
-    );
-  }
 }
 
 @Injectable()

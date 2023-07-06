@@ -14,18 +14,6 @@ export class PrismaUsersMapper {
       tenant_id: data.tenant_id,
     };
   }
-
-  static toDomain(data: RawUsers): User {
-    return new User(
-      {
-        username: data.username,
-        email: data.email,
-        password: data.password,
-        tenant_id: data.tenant_id,
-      },
-      data.id,
-    );
-  }
 }
 
 @Injectable()

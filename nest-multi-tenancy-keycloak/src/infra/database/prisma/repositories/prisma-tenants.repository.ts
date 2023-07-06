@@ -17,18 +17,6 @@ export class PrismaTenantsMapper {
       publicKey: data.publicKey,
     };
   }
-
-  static toDomain(data: RawTenants): Tenant {
-    return new Tenant(
-      {
-        subdomain: data.subdomain,
-        name: data.name,
-        secretKey: data.secretKey,
-        publicKey: data.publicKey,
-      },
-      data.id,
-    );
-  }
 }
 
 @Injectable()
