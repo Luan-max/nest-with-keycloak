@@ -3,6 +3,7 @@ import { User } from 'src/application/entities/user.entity';
 import { UserRepository } from 'src/application/repositories/user.repository';
 import { PrismaService } from '../prisma.service';
 import { Injectable } from '@nestjs/common';
+import { GetResult } from '@prisma/client/runtime';
 
 export class PrismaUsersMapper {
   static toPrisma(data: User) {
@@ -30,6 +31,15 @@ export class PrismaUsersMapper {
 @Injectable()
 export class PrismaUserRepository implements UserRepository {
   constructor(private prisma: PrismaService) {}
+  async findOneByEmail(email: string): Promise<RawUsers> {
+    const user = await this.prisma.user.findFirst({
+      where: {
+        email,
+      },
+    });
+
+    return user;
+  }
 
   async create(data: User): Promise<RawUsers> {
     const prismaUserData = PrismaUsersMapper.toPrisma(data);

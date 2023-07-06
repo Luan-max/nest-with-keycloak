@@ -6,10 +6,11 @@ import { CreateUser } from 'src/application/use-cases/users/create-user';
 import { UserController } from './controllers/user.controller';
 import { TransactionController } from './controllers/transaction.controller';
 import { CreateTransaction } from 'src/application/use-cases/transactions/create-transactions';
+import { ListTransaction } from 'src/application/use-cases/transactions/list-transactions';
 
 @Module({
   imports: [DatabaseModule],
   controllers: [TenantsController, UserController, TransactionController],
-  providers: [CreateTenant, CreateUser, CreateTransaction],
+  providers: [CreateTenant, CreateUser, CreateTransaction, ListTransaction],
 })
 export class HttpModule {}

@@ -5,6 +5,7 @@ import { PrismaService } from '../prisma.service';
 import { Injectable } from '@nestjs/common';
 import { TransactionRepository } from 'src/application/repositories/transaction.repository';
 import { Transaction } from 'src/application/entities/transaction.entity';
+import { GetResult } from '@prisma/client/runtime';
 
 export class PrismaUsersMapper {
   static toPrisma(data: Transaction) {
@@ -31,12 +32,19 @@ export class PrismaUsersMapper {
 @Injectable()
 export class PrismaTransactionRepository implements TransactionRepository {
   constructor(private prisma: PrismaService) {}
+  async list(tenant_id): Promise<Transactions[]> {
+    const list = await this.prisma.transactions.findMany({
+      where: { tenant_id },
+    });
 
-  async create(data: Transaction): Promise<Transactions> {
+    return list;
+  }
+
+  async create(data: Transaction, tenant_id): Promise<Transactions> {
     const prismaTransactionData = PrismaUsersMapper.toPrisma(data);
 
     const save = await this.prisma.transactions.create({
-      data: { ...prismaTransactionData, tenant_id: "1" },
+      data: { ...prismaTransactionData, tenant_id },
     });
 
     return save;
