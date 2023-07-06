@@ -8,10 +8,11 @@ export class TenantsService {
   constructor(private prisma: PrismaService) {}
 
   async create(data: CreateTenantDTO, user): Promise<Tenants> {
+    
     const isMaster = user.resource_access.account.roles.some(
       (role) => role === 'manage-account',
     );
-
+    
     if (!isMaster) throw new Error('Forbidden');
 
     const save = await this.prisma.tenants.create({

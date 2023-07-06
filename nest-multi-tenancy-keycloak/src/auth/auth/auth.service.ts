@@ -1,18 +1,33 @@
 import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
 import { firstValueFrom } from 'rxjs';
+import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class AuthService {
-  constructor(private http: HttpService) {}
+  constructor(private http: HttpService, private prisma: PrismaService) {}
 
   async login(username: string, password: string) {
+    const user = await this.prisma.user.findFirst({
+      where: {
+        username,
+      },
+    });
+
+    const tenant =
+      user &&
+      (await this.prisma.tenants.findFirst({
+        where: { id: Number(user.tenant_id) },
+      }));
+
     const { data } = await firstValueFrom(
       this.http.post(
-        'http://localhost:8080/auth/realms/studing/protocol/openid-connect/token',
+        `http://localhost:8080/auth/realms/${
+          tenant ? tenant.subdomain.toLocaleLowerCase() : 'studing'
+        }/protocol/openid-connect/token`,
         new URLSearchParams({
           client_id: 'nest',
-          client_secret: '702bcd77-1c3f-47fe-b1a0-065666dc04d7',
+          client_secret: '1f6bd26d-3062-40de-b9ec-85c0b0cdc74c',
           grant_type: 'password',
           username,
           password,

@@ -8,10 +8,16 @@ export class TransactionsService {
   constructor(private prisma: PrismaService) {}
 
   async create(data: CreateTransactionDTO, user): Promise<Transactions> {
-    const subdomain = user.subdomain;
+  
+    const admin = await this.prisma.user.findFirst({
+      where: {
+        username: user.preferred_username,
+      },
+    });
+
     const tenant = await this.prisma.tenants.findFirst({
       where: {
-        subdomain,
+        id: Number(admin.tenant_id),
       },
     });
 
@@ -28,10 +34,15 @@ export class TransactionsService {
   }
 
   async list(user): Promise<Transactions[]> {
-    const subdomain = user.subdomain;
+    const admin = await this.prisma.user.findFirst({
+      where: {
+        username: user.preferred_username,
+      },
+    });
+
     const tenant = await this.prisma.tenants.findFirst({
       where: {
-        subdomain,
+        id: Number(admin.tenant_id),
       },
     });
 

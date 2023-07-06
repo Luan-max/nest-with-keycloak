@@ -8,10 +8,9 @@ export class UsersService {
   constructor(private prisma: PrismaService) {}
 
   async create(data: CreateUserDTO, user): Promise<User> {
-    const subdomain = user.subdomain;
     const tenant = await this.prisma.tenants.findFirst({
       where: {
-        subdomain,
+        subdomain: data.tenant,
       },
     });
 
