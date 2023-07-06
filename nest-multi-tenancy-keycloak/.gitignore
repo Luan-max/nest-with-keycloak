@@ -29,7 +29,8 @@ lerna-debug.log*
 
 .env
 
-./dev.db
+dev.db
+dev.db-journal
 # IDE - VSCode
 .vscode/*
 !.vscode/settings.json
