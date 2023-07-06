@@ -3,6 +3,7 @@ export interface TenantProps {
   subdomain: string;
   name: string;
   secretKey: string;
+  publicKey: string;
 }
 
 export class Tenant {
@@ -40,5 +41,13 @@ export class Tenant {
 
   public get secretKey(): string {
     return this.props.secretKey;
+  }
+
+  public set publicKey(publicKey: string) {
+    this.props.publicKey = publicKey;
+  }
+
+  public get publicKey(): string {
+    return this.props.publicKey;
   }
 }

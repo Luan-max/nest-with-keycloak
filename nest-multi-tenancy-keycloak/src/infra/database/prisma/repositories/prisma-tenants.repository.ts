@@ -13,6 +13,7 @@ export class PrismaTenantsMapper {
       subdomain: data.subdomain,
       name: data.name,
       secretKey: data.secretKey,
+      publicKey: data.publicKey,
     };
   }
 
@@ -22,6 +23,7 @@ export class PrismaTenantsMapper {
         subdomain: data.subdomain,
         name: data.name,
         secretKey: data.secretKey,
+        publicKey: data.publicKey,
       },
       data.id,
     );

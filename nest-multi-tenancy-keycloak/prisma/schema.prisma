@@ -16,6 +16,7 @@ model Tenants {
   name      String?
   secretKey String?
   users     User[]
+  publicKey String?
   transactions Transactions[]
 }
 

@@ -7,6 +7,7 @@ interface CreateTenantRequestRequest {
   subdomain: string;
   name: string;
   secretKey: string;
+  publicKey: string;
 }
 
 @Injectable()
@@ -17,12 +18,13 @@ export class CreateTenant {
     createTenantRequestRequest: CreateTenantRequestRequest,
     user,
   ): Promise<Tenants> {
-    const { name, secretKey, subdomain } = createTenantRequestRequest;
+    const { name, secretKey, subdomain, publicKey } = createTenantRequestRequest;
 
     const tenant = new TenantEntity({
       name,
       secretKey,
       subdomain,
+      publicKey,
     });
 
     const isMaster = user.resource_access.account.roles.some(
