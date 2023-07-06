@@ -19,14 +19,14 @@ export class CreateUser {
   ): Promise<User> {
     const { email, password, tenant_id, username } = createUserRequestRequest;
 
-    const tenant = new UserEntity({
+    const user = new UserEntity({
       email,
       password,
       tenant_id,
       username,
     });
 
-    const save = await this.userRepository.create(tenant);
+    const save = await this.userRepository.create(user);
 
     return save;
   }
