@@ -11,9 +11,11 @@ export class SecretProviderService {
         email,
       },
     });
-    const secret = await this.prisma.tenants.findFirst({
+
+    const secret = user && await this.prisma.tenants.findFirst({
       where: { id: Number(user?.tenant_id) },
     });
+    
     return secret?.publicKey;
   }
 }

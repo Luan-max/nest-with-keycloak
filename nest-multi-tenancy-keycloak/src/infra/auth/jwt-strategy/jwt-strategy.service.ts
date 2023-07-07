@@ -2,9 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
-import { PrismaService } from 'src/infra/database/prisma/prisma.service';
 import { SecretProviderService } from './secret-provider.service';
-import { decode, verify } from 'jsonwebtoken';
+import { decode } from 'jsonwebtoken';
 @Injectable()
 export class JwtStrategyService extends PassportStrategy(Strategy, 'jwt') {
   constructor(
@@ -14,23 +13,24 @@ export class JwtStrategyService extends PassportStrategy(Strategy, 'jwt') {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
-      // secretOrKey: configService.get('JWT_SECRET'),
       secretOrKeyProvider: async (_, rawJwtToken, done) => {
         try {
           const decodedToken: any = decode(rawJwtToken);
-          console.log(decodedToken);
-          const secret = await this.secretProvider.getSecret(
+
+          const getPublickKey = await this.secretProvider.getSecret(
             decodedToken.email,
           );
 
+          const secret = getPublickKey
+            ? `-----BEGIN PUBLIC KEY-----\n${getPublickKey}\n-----END PUBLIC KEY-----`
+            : configService.get('JWT_SECRET');
+
           if (secret) {
-            console.log('oi chegou')
             return done(null, secret);
           } else {
-            done(new Error('Secret not found'));
+            done(new Error('Secret not registered'));
           }
         } catch (err) {
-          console.log(err);
           done(err);
         }
       },
