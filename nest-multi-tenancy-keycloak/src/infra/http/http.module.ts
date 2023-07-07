@@ -7,10 +7,18 @@ import { UserController } from './controllers/user.controller';
 import { TransactionController } from './controllers/transaction.controller';
 import { CreateTransaction } from 'src/application/use-cases/transactions/create-transactions';
 import { ListTransaction } from 'src/application/use-cases/transactions/list-transactions';
+import { KeycloakService } from './services/keycloak/keycloak.service';
+import { HttpModule as HttpModuleAxios } from '@nestjs/axios';
 
 @Module({
-  imports: [DatabaseModule],
+  imports: [DatabaseModule, HttpModuleAxios],
   controllers: [TenantsController, UserController, TransactionController],
-  providers: [CreateTenant, CreateUser, CreateTransaction, ListTransaction],
+  providers: [
+    CreateTenant,
+    CreateUser,
+    CreateTransaction,
+    ListTransaction,
+    KeycloakService,
+  ],
 })
 export class HttpModule {}
